@@ -25,7 +25,8 @@ class PublicOrganizationProfileTests(unittest.TestCase):
         self.assertIn("Khaotic.AI", self.svg)
         self.assertIn("Build the Possibility", self.svg)
         self.assertNotIn("<script", self.svg.lower())
-        self.assertNotIn("http://", self.svg.lower())
+        without_xml_namespace = self.svg.replace("http://www.w3.org/2000/svg", "")
+        self.assertNotIn("http://", without_xml_namespace.lower())
         self.assertNotIn("https://", self.svg.lower())
 
     def test_banner_relative_path_resolves(self):
