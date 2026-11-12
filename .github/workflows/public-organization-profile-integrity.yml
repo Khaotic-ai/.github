@@ -1,0 +1,33 @@
+name: Khaotic public organization profile integrity
+
+on:
+  pull_request:
+    paths:
+      - "profile/**"
+      - "assets/**"
+      - "tests/test_profile_integrity_v1.py"
+      - ".github/workflows/public-organization-profile-integrity.yml"
+  push:
+    branches: [main]
+    paths:
+      - "profile/**"
+      - "assets/**"
+      - "tests/test_profile_integrity_v1.py"
+      - ".github/workflows/public-organization-profile-integrity.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  public-only-source-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout public organization profile
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Run public profile and source boundary tests
+        run: |
+          set -euo pipefail
+          PYTHONDONTWRITEBYTECODE=1 python3 -B tests/test_profile_integrity_v1.py
